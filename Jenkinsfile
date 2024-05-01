@@ -11,12 +11,12 @@ pipeline {
 
      stages {
 
-         stage('Checkout') {
-            steps {
-                // Шаг для получения исходного кода (если нужно)
-                git 'https://github.com/entonekryzhovnik/devops_tech_test.git'
-            }
-        }
+        //  stage('Checkout') {
+        //     steps {
+        //         // Шаг для получения исходного кода (если нужно)
+        //         git 'https://github.com/entonekryzhovnik/devops_tech_test.git'
+        //     }
+        // }
 
         stage('Install Tools') {
             steps {
