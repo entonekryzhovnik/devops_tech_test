@@ -1,0 +1,6 @@
+apiVersion: v2
+name: my-nginx
+description: A Helm chart for Kubernetes. It installs the latest version of nginx, which is accessible on port 32080. 
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
