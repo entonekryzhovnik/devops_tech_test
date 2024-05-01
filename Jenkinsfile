@@ -1,17 +1,44 @@
-
 pipeline {
     agent any
-    stages {
-        stage('Clone repository') {
+
+    environment {
+        PATH = "/usr/local/bin:${env.PATH}"
+        KUBECTL_VERSION = sh(script: 'curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt', returnStdout: true).trim()
+        KUBECTL_URL = "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+        HELM_VERSION = "3.7.0" // Версия Helm
+        HELM_PATH = "${WORKSPACE}/helm" // Путь к исполняемому файлу Helm
+    }
+
+     stages {
+
+         stage('Checkout') {
             steps {
-                // Шаг клонирования вашего репозитория
-                git 'https://github.com/entonekryzhovnik/devops_tech_test'
+                // Шаг для получения исходного кода (если нужно)
+                git 'https://github.com/entonekryzhovnik/devops_tech_test.git'
             }
         }
-        stage('Install Helm Chart') {
+
+        stage('Install Tools') {
             steps {
-                // Шаг установки Helm чарта
-                sh 'helm install my-nginx ./my-nginx'
+                // Установка kubectl
+                sh "curl -LO ${KUBECTL_URL}"
+                sh "chmod +x ./kubectl"
+
+                // Установка Helm
+                sh "curl -fsSL -o helm.tar.gz https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
+                sh "tar -zxvf helm.tar.gz"
+                sh "mv linux-amd64/helm ./helm"
+                sh "chmod +x ./helm"
+            }
+        }
+        stage('Deploy Nginx') {
+            steps {
+                script {
+
+
+                    // Добавляем путь к Helm в переменную среды PATH
+                    sh "./helm install my-nginx ./my-nginx"
+                }
             }
         }
     }
