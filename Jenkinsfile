@@ -30,7 +30,7 @@ pipeline {
 
 
                     // Добавляем путь к Helm в переменную среды PATH
-                    sh "./helm install my-nginx ./my-nginx"
+                    sh "./helm upgrade my-nginx ./my-nginx"
                 }
             }
         }
